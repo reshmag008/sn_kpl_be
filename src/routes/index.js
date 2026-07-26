@@ -1,5 +1,6 @@
 const express = require('express');
 const playerService = require('../services/player');
+const loginService = require('../services/login');
 const teamService = require('../services/teams')
 const bodyParser = require('body-parser');
 const s3Service = require('../services/s3Service');
@@ -137,6 +138,14 @@ router.post('/players', bodyParser.json(),(req, res) => {
     .then((result) => res.status(200).json(result))
     .catch((err) => res.status(500).json(err))
 });
+
+router.post('/validate_league_login', bodyParser.json(),(req, res) => {
+    console.log(req.body)
+    loginService.validateLeagueOwnerLogin(req.body)
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(500).json(err))
+});
+
 
 router.post('/player_display', bodyParser.json(),(req, res) => {
     console.log(req.body)
