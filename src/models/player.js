@@ -19,6 +19,10 @@ module.exports = (sequelize, type) => {
         team_id : { type: type.INTEGER, allowNull: true },
         base_amount : { type: type.INTEGER, allowNull: true },
         bid_amount : { type: type.INTEGER, allowNull: true },
+        status : { type: type.INTEGER, allowNull: false },
+        jersey_name : { type: type.STRING, allowNull: true },
+        jersey_no : { type: type.STRING, allowNull: true },
+        jersey_size : { type: type.STRING, allowNull: true },
         un_sold : { type: type.BOOLEAN, allowNull: true, default:false }
       },
       {
