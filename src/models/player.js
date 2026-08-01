@@ -23,6 +23,7 @@ module.exports = (sequelize, type) => {
         jersey_name : { type: type.STRING, allowNull: true },
         jersey_no : { type: type.STRING, allowNull: true },
         jersey_size : { type: type.STRING, allowNull: true },
+        payment_screenshot : { type: type.STRING, allowNull: true },
         un_sold : { type: type.BOOLEAN, allowNull: true, default:false }
       },
       {
