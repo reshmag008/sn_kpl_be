@@ -281,6 +281,20 @@ async function updateUnSold(){
 
 }
 
+
+async function approvePlayers(params) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log("inside update approvePlayers")
+            let resp = await models.players.update({status:2},{where:{id:params.id}});
+            console.log("resp== ", resp);
+            resolve(resp);
+        }catch(e){
+            reject(e)
+        }
+    })
+}
+
 async function displayTeamScores(){
     return new Promise(async (resolve, reject) => {
         try {
@@ -309,5 +323,6 @@ module.exports = {
     updateUnSold:updateUnSold,
     closePopup:closePopup,
     displayTeamScores :displayTeamScores,
-    updatePaymentScreenshot : updatePaymentScreenshot
+    updatePaymentScreenshot : updatePaymentScreenshot,
+    approvePlayers:approvePlayers
 };
