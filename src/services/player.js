@@ -253,6 +253,20 @@ async function updatePlayers(player){
     })
 }
 
+async function updatePaymentScreenshot(params){
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log("inside update updatePaymentScreenshot")
+            let resp = await models.players.update({payment_screenshot:params.file_name},{where:{id:params.player_id}});
+            console.log("resp== ", resp);
+            resolve(resp);
+        }catch(e){
+            reject(e)
+        }
+    })
+
+}
+
 async function updateUnSold(){
     return new Promise(async (resolve, reject) => {
         try {
@@ -294,5 +308,6 @@ module.exports = {
     teamComplete :teamComplete,
     updateUnSold:updateUnSold,
     closePopup:closePopup,
-    displayTeamScores :displayTeamScores
+    displayTeamScores :displayTeamScores,
+    updatePaymentScreenshot : updatePaymentScreenshot
 };
