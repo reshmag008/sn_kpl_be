@@ -288,7 +288,8 @@ async function approvePlayers(params) {
             console.log("inside update approvePlayers")
             let resp = await models.players.update({status:2},{where:{id:params.id}});
             console.log("resp== ", resp);
-            resolve(resp);
+            let selectedPlayer = await models.players.findOne({where : {id : params.id}});
+            resolve(selectedPlayer);
         }catch(e){
             reject(e)
         }
