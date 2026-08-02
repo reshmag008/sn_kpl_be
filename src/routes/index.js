@@ -70,7 +70,10 @@ router.post("/gcsupload", gcsUpload.single("file"), async (req, res) => {
         console.log("bucket.name== ", bucket.name)
         blobStream.on("finish", () => {
             const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-            playerService.updatePaymentScreenshot(req.body)
+            if(req?.body?.screenshot){
+                playerService.updatePaymentScreenshot(req.body)
+            }
+            
             return res.status(200).json({ url: publicUrl });
         });
 

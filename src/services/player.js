@@ -257,7 +257,7 @@ async function updatePaymentScreenshot(params){
     return new Promise(async (resolve, reject) => {
         try {
             console.log("inside update updatePaymentScreenshot")
-            let resp = await models.players.update({payment_screenshot:params.file_name},{where:{id:params.player_id}});
+            let resp = await models.players.update({payment_screenshot:params.screenshot},{where:{id:params.player_id}});
             console.log("resp== ", resp);
             resolve(resp);
         }catch(e){
