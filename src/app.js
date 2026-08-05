@@ -90,4 +90,129 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "my_verify_token";
+
+app.get("/webhook/whatsapp", (req, res) => {
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  console.log("WhatsApp webhook verification request");
+
+  if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    console.log("WhatsApp webhook verified successfully");
+
+    return res.status(200).send(challenge);
+  }
+
+  console.log("WhatsApp webhook verification failed");
+
+  return res.sendStatus(403);
+});
+
+
+app.post("/webhook/whatsapp", (req, res) => {
+  try {
+    console.log(
+      "WhatsApp webhook received:",
+      JSON.stringify(req.body, null, 2)
+    );
+
+    const body = req.body;
+
+    if (body.object !== "whatsapp_business_account") {
+      return res.sendStatus(404);
+    }
+
+    const entries = body.entry || [];
+
+    entries.forEach((entry) => {
+      const changes = entry.changes || [];
+
+      changes.forEach((change) => {
+        const value = change.value;
+
+        // Message status updates
+        const statuses = value?.statuses || [];
+
+        statuses.forEach((status) => {
+          console.log("=================================");
+          console.log("WhatsApp Message Status");
+          console.log("Message ID:", status.id);
+          console.log("Status:", status.status);
+          console.log("Recipient:", status.recipient_id);
+          console.log("Timestamp:", status.timestamp);
+
+          if (status.errors) {
+            console.log(
+              "Errors:",
+              JSON.stringify(status.errors, null, 2)
+            );
+          }
+
+          console.log("=================================");
+
+          switch (status.status) {
+            case "sent":
+              console.log("Message sent to WhatsApp");
+              break;
+
+            case "delivered":
+              console.log("Message delivered to recipient");
+              break;
+
+            case "read":
+              console.log("Message read by recipient");
+              break;
+
+            case "failed":
+              console.log("Message delivery failed");
+
+              if (status.errors) {
+                status.errors.forEach((error) => {
+                  console.log("Error code:", error.code);
+                  console.log("Error title:", error.title);
+                  console.log("Error message:", error.message);
+                });
+              }
+
+              break;
+
+            default:
+              console.log("Unknown status:", status.status);
+          }
+        });
+
+        // Incoming WhatsApp messages
+        const messages = value?.messages || [];
+
+        messages.forEach((message) => {
+          console.log("Incoming WhatsApp message");
+
+          console.log("Message ID:", message.id);
+          console.log("From:", message.from);
+          console.log("Type:", message.type);
+
+          if (message.text) {
+            console.log("Text:", message.text.body);
+          }
+        });
+      });
+    });
+
+    // IMPORTANT:
+    // Respond quickly to WhatsApp
+    return res.sendStatus(200);
+
+  } catch (error) {
+    console.error("WhatsApp webhook error:", error);
+
+    return res.sendStatus(500);
+  }
+});
+
+
+
+
+
 module.exports = { app, server, io };
