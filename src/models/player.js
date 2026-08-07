@@ -11,6 +11,7 @@ module.exports = (sequelize, type) => {
         fullname: { type: type.STRING, allowNull: false },
         location: { type: type.STRING, allowNull: false },
         contact_no: { type: type.INTEGER, allowNull: false },
+        whatsapp_no: { type: type.INTEGER, allowNull: false },
         profile_image: { type: type.STRING, allowNull: false },
         profile_link: { type: type.STRING, allowNull: true },
         player_role: { type: type.STRING, allowNull: false },
