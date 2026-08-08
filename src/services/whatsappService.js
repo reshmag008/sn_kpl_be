@@ -2,7 +2,7 @@ const axios = require("axios");
 
 async function sendWhatsAppWelcomeMessage (fullName,playerId,phoneNumber) {
   try {
-    const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
+    const accessToken = process.env.WHATSAPP_VERIFY_TOKEN;
 
     const url = `https://graph.facebook.com/v26.0/1306356359220626/messages`;
 
