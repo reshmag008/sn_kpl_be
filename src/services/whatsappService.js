@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-async function sendWhatsAppWelcomeMessage (fullName,playerId) {
+async function sendWhatsAppWelcomeMessage (fullName,playerId,phoneNumber) {
   try {
     const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
 

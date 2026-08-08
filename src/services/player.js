@@ -223,7 +223,7 @@ async function addPlayers(player){
     return new Promise(async (resolve, reject) => {
         try {
             let players = await models.players.create(player);
-            let wahtsappResponse = await whatsappService.sendWhatsAppWelcomeMessage(player.fullname,player.id);
+            let wahtsappResponse = await whatsappService.sendWhatsAppWelcomeMessage(player.fullname,player.id,player.whatsapp_no);
             resolve({players:players, wahtsappResponse:wahtsappResponse})
         }catch(e){
             console.log("error occured in addPlayers= ", e);
