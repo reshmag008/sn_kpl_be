@@ -5,7 +5,8 @@ const AWS = require('aws-sdk');
 const teamService = require('./teams');
 const s3Service = require('./s3Service');
 // const {io} = require('../app');
-const {roomId} = require('../config/constants')
+const {roomId} = require('../config/constants');
+const whatsappService = require('./whatsappService');
 
 
 async function displayPlayer(player){
@@ -222,7 +223,8 @@ async function addPlayers(player){
     return new Promise(async (resolve, reject) => {
         try {
             let players = await models.players.create(player);
-            resolve(players)
+            let wahtsappResponse = await whatsappService.sendWhatsAppWelcomeMessage(player.fullname,player.id);
+            resolve({players:players, wahtsappResponse:wahtsappResponse})
         }catch(e){
             console.log("error occured in addPlayers= ", e);
             reject(e);
