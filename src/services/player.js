@@ -79,7 +79,7 @@ async function getSoldPlayers(){
             let players = await models.players.findAll({
                 where: {
                   bid_amount: {
-                    [Sequelize.Op.not]: null
+                    [Sequelize.Op.not]: 0
                   }
                 },order: [['updatedAt', 'DESC']], limit:10
               });
@@ -142,11 +142,11 @@ async function getPlayers(params){
             let unSoldPlayerCount = await models.players.count({where: {un_sold : true} });
             let soldPlayerCount = await models.players.count({where: {
                 bid_amount: {
-                  [Op.not]: null
+                  [Op.not]: 0
                 }
               }})
             let pendingPlayerCount = await models.players.count({where:{
-                bid_amount : null ,
+                bid_amount : 0 ,
                 un_sold : false
             }})
 
@@ -177,7 +177,7 @@ async function getNonBidPlayers(id) {
             if(id){
                 players = await models.players.findAll({
                     where: {
-                      bid_amount: null,
+                      bid_amount: 0,
                       id : id,
                       un_sold : false
                     }
@@ -185,7 +185,7 @@ async function getNonBidPlayers(id) {
             }else{
                 players = await models.players.findAll({
                     where: {
-                      bid_amount: null,
+                      bid_amount: 0,
                       un_sold : false
                     }
                   });
@@ -310,6 +310,53 @@ async function displayTeamScores(){
     })
 }
 
+async function getPlayerstoSendwahtsapp(){
+    return new Promise(async (resolve, reject) => {
+        try {
+            let players = await models.players.findAll({ 
+                    limit : 7,
+                    offset : 85
+                });
+               
+                const whatsappResponseArray = [];
+
+for (const playerItem of players) {
+    const contactNo = String(playerItem.contact_no || "").trim();
+
+    if (contactNo.length === 10) {
+        const whatsapp_no = `91${contactNo}`;
+
+        console.log(
+            `Players=== ${playerItem.id} ${playerItem.fullname} ${whatsapp_no}`
+        );
+
+        whatsappResponseArray.push(
+            whatsappService.sendWhatsAppWelcomeMessage(
+                playerItem.fullname,
+                playerItem.id,
+                whatsapp_no
+            )
+        );
+    } else {
+        console.log(
+            `Invalid contact number: ${playerItem.contact_no} for ${playerItem.id}`
+        );
+    }
+}
+
+const responseArray = await Promise.allSettled(whatsappResponseArray);
+
+console.log(responseArray);
+
+resolve(responseArray);
+        }catch(err){
+            console.log("error== ", err);
+            reject(err)
+        }
+    })
+}
+
+
 
 
 
@@ -327,5 +374,6 @@ module.exports = {
     closePopup:closePopup,
     displayTeamScores :displayTeamScores,
     updatePaymentScreenshot : updatePaymentScreenshot,
-    approvePlayers:approvePlayers
+    approvePlayers:approvePlayers,
+    getPlayerstoSendwahtsapp:getPlayerstoSendwahtsapp
 };
