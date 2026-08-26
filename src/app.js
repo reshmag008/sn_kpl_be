@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
     //   order: [["updatedAt", "DESC"]],
     // });
 
-    io.to(roomId).emit("current_player", JSON.stringify(selectedPlayer));
+    // io.to(roomId).emit("current_player", JSON.stringify(selectedPlayer));
   });
 });
 
