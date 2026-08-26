@@ -72,10 +72,10 @@ io.on("connection", (socket) => {
   socket.on("join-room", async (roomId) => {
     socket.join(roomId);
 
-    const selectedPlayer = await models.players.findOne({
-      where: { profile_link: "1" },
-      order: [["updatedAt", "DESC"]],
-    });
+    // const selectedPlayer = await models.players.findOne({
+    //   where: { profile_link: "1" },
+    //   order: [["updatedAt", "DESC"]],
+    // });
 
     io.to(roomId).emit("current_player", JSON.stringify(selectedPlayer));
   });
@@ -114,9 +114,13 @@ app.get("/webhook/whatsapp", (req, res) => {
 
 app.post("/webhook/whatsapp", (req, res) => {
   try {
+    // console.log(
+    //   "WhatsApp webhook received:",
+    //   JSON.stringify(req.body.entry[0].changes[0].value.metadata, null, 2)
+    // );
     console.log(
-      "WhatsApp webhook received:",
-      JSON.stringify(req.body, null, 2)
+      "WhatsApp webhook Status :::::",
+      JSON.stringify(req.body.entry[0].changes[0].value.statuses, null, 2)
     );
 
     const body = req.body;
