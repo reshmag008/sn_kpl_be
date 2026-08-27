@@ -14,7 +14,7 @@ const app = express();
    CORS (SINGLE SOURCE)
    ======================= */
 const ALLOWED_ORIGINS =
-  "*";
+  "*,https://sn-kpl-fe-204746249106.europe-west1.run.app,http://localhost:8081,http://localhost:8080";
 
 const allowedOrigins = ALLOWED_ORIGINS.split(",");
 
