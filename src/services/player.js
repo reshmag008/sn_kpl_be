@@ -168,6 +168,21 @@ async function getPlayers(params){
     })
 }
 
+async function getCurrentBidPlayer(){
+    return new Promise(async (resolve, reject) => {
+        try {
+            const selectedPlayer = await models.players.findOne({
+                where: { profile_link: "1" },
+                order: [["updatedAt", "DESC"]],
+            });
+            resolve(selectedPlayer)
+        }catch(e){
+            console.log("error occured in getCurrentBidPlayer= ", e);
+            reject(e);
+        }
+    })
+}
+
 async function getNonBidPlayers(id) {
 
     return new Promise(async (resolve, reject) => {
@@ -375,5 +390,6 @@ module.exports = {
     displayTeamScores :displayTeamScores,
     updatePaymentScreenshot : updatePaymentScreenshot,
     approvePlayers:approvePlayers,
-    getPlayerstoSendwahtsapp:getPlayerstoSendwahtsapp
+    getPlayerstoSendwahtsapp:getPlayerstoSendwahtsapp,
+    getCurrentBidPlayer : getCurrentBidPlayer
 };

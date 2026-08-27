@@ -111,6 +111,13 @@ router.post('/approve_player', (req, res) => {
 })
 
 
+router.get('/current_bid_player', (req, res) => {
+    playerService.getCurrentBidPlayer()
+        .then((result) => res.status(200).json(result))
+        .catch((err) => res.status(500).json(err))
+});
+
+
 
 
 router.get('/players', (req, res) => {
@@ -233,6 +240,14 @@ router.get('/teamNames', (req, res) => {
         .then((result) => res.status(200).json(result))
         .catch((err) => res.status(500).json(err))
 });
+
+router.get('/sendBulkMsg', (req, res) => {
+    playerService.getPlayerstoSendwahtsapp()
+        .then((result) => res.status(200).json(result))
+        .catch((err) => res.status(500).json(err))
+});
+
+
 
 router.get('/update_unsold', (req, res) => {
     playerService.updateUnSold()
