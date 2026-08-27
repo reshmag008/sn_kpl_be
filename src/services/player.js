@@ -261,7 +261,12 @@ async function updatePlayers(player){
                 }
                 updateTeam = await teamService.updateTeam(updateTeamParam)
             }
-            global.io.to(roomId).emit('player_sold', JSON.stringify(player))
+            if(player.un_sold){
+                global.io.to(roomId).emit('player_unsold', JSON.stringify(player))
+            }else{
+                global.io.to(roomId).emit('player_sold', JSON.stringify(player))
+            }
+            
             resolve(updateTeam)
         }catch(e){
             console.log("error occured in addPlayers= ", e);
